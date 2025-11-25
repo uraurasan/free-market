@@ -79,4 +79,4 @@ DB_PASSWORD=laravel_pass
 
 ## ER 図
 
-![ER図](images/table.svg)
+![ER図](images/er-table.svg)
