@@ -45,6 +45,14 @@ services:
       - mysql
     ports:
       - 8080:80
+
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "8025:8025" # 管理画面用
+      - "1025:1025" # SMTPサーバー用
+
 volumes:
   mysql_data:
     driver: local
