@@ -539,29 +539,22 @@ ul {
 .icon-block {
     display: flex;
     flex-direction: column;
-    /* ▼▼ ここ重要！縦並びに変更 ▼▼ */
     align-items: center;
-    /* 中央揃え */
     gap: 5px;
-    /* アイコンと数字の隙間 */
     cursor: pointer;
     min-width: 40px;
 }
 
 .icon-img {
     width: 20px;
-    /* アイコンのサイズ */
     height: 20px;
     object-fit: contain;
-    /* 縦横比を崩さず収める */
 }
 
 .icon-count {
     font-size: 14px;
-    /* 数字のサイズ調整 */
     color: #333;
     line-height: 1;
-    /* 行間を詰める */
 }
 
 .btn-purchase {
@@ -608,11 +601,9 @@ ul {
 
 .category-tag {
     background-color: #e0e0e0;
-    /* 理想図に近いグレー */
     color: #333;
     padding: 5px 15px;
     border-radius: 20px;
-    /* 丸くする */
     font-size: 12px;
     display: inline-block;
 }
@@ -716,11 +707,8 @@ ul {
     gap: 20px;
     align-items: center;
     border-bottom: 1px solid #ccc;
-    /* ▼▼ 修正: 余白を縮めてスッキリさせる ▼▼ */
     padding-bottom: 10px;
-    /* 20px → 10px */
     margin-bottom: 20px;
-    /* ここは次のセクションとの距離 */
 }
 
 .purchase-item-img {
@@ -756,9 +744,7 @@ ul {
 
 .purchase-section {
     border-bottom: 1px solid #ccc;
-    /* ▼▼ 修正: 余白を縮める ▼▼ */
     padding-bottom: 10px;
-    /* 20px → 10px */
     margin-bottom: 20px;
 }
 
@@ -775,10 +761,8 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* ▼▼ 修正: 隙間調整 ▼▼ */
     margin-bottom: 10px;
     border-bottom: none;
-    /* ここに線が出ないように念押し */
 }
 
 .change-link {
@@ -910,22 +894,20 @@ ul {
     padding: 0 20px;
 }
 
-/* ユーザープロフィール部分 */
 .user-profile-section {
     display: flex;
     align-items: center;
     gap: 30px;
     margin-bottom: 40px;
-    justify-content: center; /* 全体を中央寄せ（お好みで） */
+    justify-content: center;
 }
 
-/* アバター（丸いアイコン） */
 .user-avatar {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    background-color: #d9d9d9; /* 画像がない時のグレー */
+    background-color: #d9d9d9;
 }
 
 .user-avatar img {
@@ -940,13 +922,11 @@ ul {
     background-color: #ccc;
 }
 
-/* ユーザー名 */
 .user-name {
     font-size: 24px;
     font-weight: bold;
 }
 
-/* プロフィール編集ボタン */
 .btn-edit-profile {
     display: inline-block;
     padding: 8px 20px;
@@ -964,12 +944,11 @@ ul {
     color: white;
 }
 
-/* タブ切り替え */
 .mypage-tabs {
     display: flex;
-    gap: 0; /* タブ同士の隙間なし */
+    gap: 0;
     margin-bottom: 20px;
-    border-bottom: 1px solid #ccc; /* 下線 */
+    border-bottom: 1px solid #ccc;
 }
 
 .tab-item {
@@ -982,12 +961,12 @@ ul {
 }
 
 .tab-item.active {
-    color: #ff5555; /* アクティブな文字色 */
-    border-bottom: 3px solid #ff5555; /* アクティブな下線 */
-    margin-bottom: -2px; /* 線を重ねる調整 */
+    color: #ff5555;
+    border-bottom: 3px solid #ff5555;
+    margin-bottom: -2px;
 }
 
-/* 商品グリッド (一覧画面の使い回しがあればそれでもOK) */
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -1002,7 +981,7 @@ ul {
 .product-image-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1; /* 正方形 */
+    aspect-ratio: 1 / 1;
     background-color: #eee;
     margin-bottom: 10px;
     overflow: hidden;

@@ -3,29 +3,23 @@
 @section('content')
 <div class="auth-page">
     <h2 class="page-title">商品の出品</h2>
-
     <form class="auth-form item-form" action="{{ route('item.store') }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
-
         <div class="form-group">
             <label class="form-label">商品画像</label>
-
             <div class="image-upload-area">
                 <img id="item-image-preview" src="#" alt="プレビュー" class="image-preview" style="display: none;">
-
                 <label for="item_image" class="btn-select-image-rect">
                     画像を選択する
                 </label>
                 <input type="file" id="item_image" name="image" class="input-file-hidden" accept="image/jpeg,image/png" onchange="previewImage(this);">
             </div>
-
             @error('image')
                 <p class="form-error">{{ $message }}</p>
             @enderror
         </div>
 
         <h3 class="section-title">商品の詳細</h3>
-
         <div class="form-group">
             <label class="form-label">カテゴリー</label>
             <div class="category-list">
@@ -57,7 +51,6 @@
         </div>
 
         <h3 class="section-title">商品名と説明</h3>
-
         <div class="form-group">
             <label for="name" class="form-label">商品名</label>
             <input type="text" id="name" name="name" class="form-input" value="{{ old('name') }}">
@@ -91,7 +84,6 @@
         </div>
 
         <button type="submit" class="btn-submit btn-sell-submit">出品する</button>
-
     </form>
 </div>
 

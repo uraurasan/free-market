@@ -6,18 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ProfileRequest extends FormRequest
 {
-    /**
-     * ユーザーがこのリクエストを使う権限があるか？
-     * (今回はログイン済み前提のルートやから true でOK)
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * バリデーションルール
-     */
     public function rules(): array
     {
         return [

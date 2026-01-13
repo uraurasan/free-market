@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'post_code' => '123-4567',
             'address' => '東京都渋谷区',
             'building_name' => 'テックビル101',
-            'profile_image' => null, 
+            'profile_image' => null,
         ]);
 
         // ▼▼ 追加：出品者ユーザー作成 (商品を持つ人) ▼▼
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'コスメ', '本','ゲーム', 'スポーツ','キッチン',
             'ハンドメイド', 'アクセサリー','おもちゃ','ベビー・キッズ'
         ];
-        
+
         $categories = [];
         foreach ($categoryNames as $name) {
             $categories[] = Category::create(['name' => $name]);
@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 300,
                 'description' => '新鮮な玉ねぎ3束のセット',
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/iLoveIMG+d.jpg',
-                'brand_name' => null, 
+                'brand_name' => null,
                 'item_condition' => 3,
             ],
             [
@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 4000,
                 'description' => 'クラシックなデザインの革靴',
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+Product+Photo.jpg',
-                'brand_name' => null, 
+                'brand_name' => null,
                 'item_condition' => 4,
             ],
             [
@@ -97,7 +97,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 45000,
                 'description' => '高性能なノートパソコン',
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Living+Room+Laptop.jpg',
-                'brand_name' => null, 
+                'brand_name' => null,
                 'item_condition' => 1,
             ],
             [
@@ -105,7 +105,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 8000,
                 'description' => '高音質のレコーディング用マイク',
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Music+Mic+4632231.jpg',
-                'brand_name' => null, 
+                'brand_name' => null,
                 'item_condition' => 2,
             ],
             [
@@ -113,7 +113,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 3500,
                 'description' => 'おしゃれなショルダーバッグ',
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
-                'brand_name' => null, 
+                'brand_name' => null,
                 'item_condition' => 3,
             ],
             [
@@ -121,7 +121,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 500,
                 'description' => '使いやすいタンブラー',
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Tumbler+souvenir.jpg',
-                'brand_name' => null, 
+                'brand_name' => null,
                 'item_condition' => 4,
             ],
             [
@@ -137,7 +137,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 2500,
                 'description' => '便利なメイクアップセット',
                 'image_path' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg',
-                'brand_name' => null, 
+                'brand_name' => null,
                 'item_condition' => 2,
             ],
         ];
@@ -145,7 +145,7 @@ class DatabaseSeeder extends Seeder
         foreach ($itemsData as $index => $itemData) {
             // ▼▼ 修正：商品は「出品者ユーザー」に紐付ける（じゃないと自分で買えない！） ▼▼
             $item = Item::create([
-                'user_id' => $seller->id, 
+                'user_id' => $seller->id,
                 'name' => $itemData['name'],
                 'price' => $itemData['price'],
                 'description' => $itemData['description'],

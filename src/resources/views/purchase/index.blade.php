@@ -8,7 +8,6 @@
         <input type="hidden" name="address" value="{{ $addressData['address'] }}">
         <input type="hidden" name="building_name" value="{{ $addressData['building_name'] }}">
         <div class="purchase-inner">
-            
             <div class="purchase-left">
                 <div class="purchase-item-info">
                     <div class="purchase-item-img">
@@ -27,7 +26,6 @@
                         <p class="purchase-item-price">¥{{ number_format($item->price) }}</p>
                     </div>
                 </div>
-
                 <div class="purchase-section">
                     <h3 class="section-title">支払い方法</h3>
                     @error('payment_method')
@@ -44,7 +42,6 @@
                         <h3 class="section-title">配送先</h3>
                         <a href="{{ route('purchase.address', ['item_id' => $item->id]) }}" class="change-link">変更する</a>
                     </div>
-                    
                     <div class="address-info">
                         <p>〒 {{ $addressData['post_code'] }}</p>
                         <p>{{ $addressData['address'] }} {{ $addressData['building_name'] }}</p>
@@ -65,7 +62,6 @@
                 </div>
                 <button type="submit" class="btn-purchase-submit">購入する</button>
             </div>
-
         </div>
     </form>
 </div>
@@ -76,7 +72,6 @@
         const summaryPayment = document.getElementById('summary-payment-method');
 
         paymentSelect.addEventListener('change', function() {
-            // 選択されたオプションのテキスト（コンビニ払い etc）を取得
             const selectedText = this.options[this.selectedIndex].text;
             summaryPayment.textContent = selectedText;
         });

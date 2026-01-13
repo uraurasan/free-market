@@ -16,7 +16,7 @@ class ProfileController extends Controller
         return view('mypage.profile', compact('user'));
     }
 
-    public function update(ProfileRequest $request) // ← ここを Request から ProfileRequest に変更！
+    public function update(ProfileRequest $request)
     {
         $user = Auth::user();
         $data = $request->validated();
@@ -37,17 +37,12 @@ class ProfileController extends Controller
         $tab = $request->query('tab', 'sell');
 
         if ($tab === 'buy') {
-            // 【修正版】最強の書き方！
-            // 1. 自分が買った履歴(Purchase)を取ってくる
-            // 2. その履歴に紐づく商品(item)も一緒に持ってくる ('with')
-            // 3. 最後に pluck('item') で「商品データのリスト」だけに変換する
             $items = Purchase::where('user_id', $user->id)
-                ->with('item') // Purchaseモデルに public function item() がある前提
-                ->orderBy('created_at', 'desc') // 新しい順にする
+                ->with('item')
+                ->orderBy('created_at', 'desc')
                 ->get()
-                ->pluck('item'); // ここで Item のコレクションに変換！
+                ->pluck('item');
         } else {
-            // 出品した商品
             $items = Item::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->get();

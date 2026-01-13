@@ -14,7 +14,6 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            // 支払い方法は必須。1(コンビニ)か2(カード)のみ許可
             'payment_method' => ['required', 'in:1,2'],
             'post_code' => ['required'],
             'address'     => ['required'],

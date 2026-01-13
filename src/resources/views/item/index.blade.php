@@ -4,7 +4,6 @@
 <div class="container top-page">
 
     <div class="tab-nav">
-        {{-- ▼▼ 修正: search を keyword に変更（これで検索状態が維持される！） ▼▼ --}}
         <a href="{{ route('root', ['tab' => 'recommend', 'keyword' => $keyword]) }}"
         class="tab-item {{ $tab !== 'mylist' ? 'active' : '' }}">
             おすすめ

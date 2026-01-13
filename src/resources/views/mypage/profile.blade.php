@@ -63,18 +63,15 @@
 
 <script>
 function previewImage(input) {
-    // ファイルが選択されているかチェック
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
-        // ファイル読み込みが完了したら実行される
         reader.onload = function (e) {
             var preview = document.getElementById('profile-image-preview');
-            preview.src = e.target.result; // 読み込んだ画像のデータをsrcにセット
-            preview.style.display = 'block'; // 画像を表示
+            preview.src = e.target.result;
+            preview.style.display = 'block';
         }
 
-        // ファイルを読み込む
         reader.readAsDataURL(input.files[0]);
     }
 }

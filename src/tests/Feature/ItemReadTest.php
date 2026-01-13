@@ -14,18 +14,13 @@ class ItemReadTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * ID 4: 商品一覧表示
-     * - 自分が出品した商品は表示されない
-     * - 他人の商品は表示される
-     * - 購入済み商品は「Sold」と表示される
-     */
+    //ID 4: 商品一覧表示
     public function test_index_excludes_own_items_and_shows_sold_label()
     {
         $me = User::factory()->create();
         $other = User::factory()->create();
 
-        // 1. 自分の出品商品（表示されてはいけない）
+        // 1. 自分の出品商品
         Item::create([
             'user_id' => $me->id,
             'name' => '俺の商品',
@@ -37,7 +32,7 @@ class ItemReadTest extends TestCase
             'brand_name' => 'mybrand',
         ]);
 
-        // 2. 他人の出品商品（表示されるべき）
+        // 2. 他人の出品商品
         Item::create([
             'user_id' => $other->id,
             'name' => '他人の商品',
@@ -49,7 +44,7 @@ class ItemReadTest extends TestCase
             'brand_name' => 'otherbrand',
         ]);
 
-        // 3. 他人の売り切れ商品（表示され、「Sold」が出るべき）
+        // 3. 他人の売り切れ商品
         Item::create([
             'user_id' => $other->id,
             'name' => '売り切れ商品',
@@ -67,15 +62,11 @@ class ItemReadTest extends TestCase
         $response->assertStatus(200);
         $response->assertDontSee('俺の商品'); // 自分のは見えない
         $response->assertSee('他人の商品');   // 他人のは見える
-        $response->assertSee('売り切れ商品'); // 売り切れも見え、
-        $response->assertSee('SOLD');        // 「Sold」の文字（またはラベル）がある
+        $response->assertSee('売り切れ商品'); // 売り切れ
+        $response->assertSee('SOLD');        // 「Sold」の文字がある
     }
 
-    /**
-     * ID 5: マイリスト一覧
-     * - いいねした商品だけが表示される
-     * - Sold商品にはSoldラベルが出る
-     */
+    //ID 5: マイリスト一覧
     public function test_mylist_shows_liked_items_only()
     {
         $me = User::factory()->create();
@@ -104,7 +95,7 @@ class ItemReadTest extends TestCase
             'brand_name' => 'brand',
         ]);
 
-        // いいねテーブルに登録 (favoritesテーブル想定)
+        //テーブルに登録 (favoritesテーブル)
         DB::table('favorites')->insert([
             'user_id' => $me->id,
             'item_id' => $likedItem->id,
@@ -120,16 +111,12 @@ class ItemReadTest extends TestCase
         $response->assertDontSee('興味ない商品');
     }
 
-    /**
-     * ID 7: 商品詳細表示
-     * - 必要な情報が全て表示される
-     * - 複数カテゴリが表示される
-     */
+    //ID 7: 商品詳細表示
     public function test_detail_shows_all_information()
     {
         $user = User::factory()->create();
         $owner = User::factory()->create();
-        
+
         // カテゴリ作成
         $cat1 = Category::create(['name' => '洋服']);
         $cat2 = Category::create(['name' => 'メンズ']);
@@ -139,7 +126,7 @@ class ItemReadTest extends TestCase
             'name' => '詳細テスト商品',
             'price' => 12345,
             'description' => '詳しい説明文です',
-            'item_condition' => 1, // 1:良好 と仮定
+            'item_condition' => 1,
             'sales_status' => 1,
             'image_path' => 'detail.jpg',
             'brand_name' => 'ハイブランド',
@@ -158,14 +145,9 @@ class ItemReadTest extends TestCase
         $response->assertSee('ハイブランド');
         $response->assertSee('洋服'); // カテゴリ1
         $response->assertSee('メンズ'); // カテゴリ2
-        // コンディション表示（Viewの実装によるが、数値'1'か文字'良好'かチェック）
-        // $response->assertSee('良好'); 
     }
 
-    /**
-     * ID 8: いいね機能
-     * - アイコン押下で登録/解除（トグル）
-     */
+    //ID 8: いいね機能
     public function test_like_toggle()
     {
         $user = User::factory()->create();
@@ -199,11 +181,7 @@ class ItemReadTest extends TestCase
         ]);
     }
 
-    /**
-     * ID 9: コメント送信機能
-     * - ログインユーザーはコメントできる
-     * - バリデーションチェック
-     */
+    //ID 9: コメント送信機能
     public function test_comment_can_be_posted()
     {
         $user = User::factory()->create();
@@ -218,12 +196,12 @@ class ItemReadTest extends TestCase
             'brand_name' => 'brand',
         ]);
 
-        // 1. 正常投稿
+        // 1. 投稿
         $response = $this->actingAs($user)->post("/item/{$item->id}/comment", [
             'comment' => 'これはテストコメントです',
         ]);
 
-        // 画面リロード等のリダイレクトがあるはず
+        // 画面リロード等のリダイレクト
         $response->assertStatus(302);
 
         // DBに保存されたか
@@ -234,9 +212,8 @@ class ItemReadTest extends TestCase
         ]);
     }
 
-    /**
-     * ID 9: コメントバリデーション
-     */
+
+    //ID 9: コメントバリデーション
     public function test_comment_validation()
     {
         $user = User::factory()->create();
@@ -257,7 +234,7 @@ class ItemReadTest extends TestCase
         ]);
         $response->assertSessionHasErrors('comment');
 
-        // 256文字以上送信 (255文字制限の場合)
+        // 256文字以上送信 (255文字制限)
         $longComment = str_repeat('a', 256);
         $response = $this->actingAs($user)->post("/item/{$item->id}/comment", [
             'comment' => $longComment,

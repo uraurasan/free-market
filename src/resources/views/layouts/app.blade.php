@@ -14,14 +14,13 @@
         <div class="header-inner container">
             <h1 class="header-logo">
                 <a href="/">
-                    {{-- ▼▼ テキストを画像に変更！ ▼▼ --}}
+                    {{--テキストを画像に変更--}}
                     <img src="{{ asset('images/logo.png') }}" alt="COACHTECH">
                 </a>
             </h1>
 
             @if( !Request::is('register') && !Request::is('login') && !Request::is('email/verify') )
                 <div class="header-search">
-                    {{-- ▼▼ 修正：action にルートを指定！ ▼▼ --}}
                     <form action="{{ route('root') }}" method="GET">
                         <input type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ request('keyword') }}">
                     </form>

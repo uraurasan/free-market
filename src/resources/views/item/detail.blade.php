@@ -3,7 +3,6 @@
 @section('content')
 <div class="container item-detail-page">
     <div class="item-detail-inner">
-        
         <div class="item-detail-image">
             @if ($item->image_path)
                 @if (str_starts_with($item->image_path, 'http'))
@@ -15,34 +14,25 @@
                 <img src="{{ asset('images/no-image.png') }}" alt="No Image">
             @endif
         </div>
-
         <div class="item-detail-info">
-            
             <h2 class="item-name-large">{{ $item->name }}</h2>
             <p class="item-brand-name">{{ $item->brand_name }}</p>
-
             <div class="item-price-area">
                 <span class="price-value">¥{{ number_format($item->price) }}</span>
                 <span class="price-tax">(税込)</span>
             </div>
-
             <div class="item-action-icons">
-                <div class="icon-block like-btn" 
-                    data-item-id="{{ $item->id }}" 
+                <div class="icon-block like-btn"
+                    data-item-id="{{ $item->id }}"
                     data-auth="{{ Auth::check() ? 'true' : 'false' }}">
-                    
-                    {{-- ▼▼ ハートアイコン：ログインしていて、いいね済みなら「赤」、それ以外は「グレー」を表示 ▼▼ --}}
                     @if (Auth::user() && Auth::user()->favorites()->where('item_id', $item->id)->exists())
                         <img src="{{ asset('images/icon_like_active.png') }}" class="icon-img heart-icon" alt="いいね">
                     @else
                         <img src="{{ asset('images/icon_like.png') }}" class="icon-img heart-icon" alt="いいね">
                     @endif
-
                     <span class="icon-count" id="like-count">{{ $likeCount }}</span>
                 </div>
-
                 <div class="icon-block">
-                    {{-- ▼▼ コメントアイコン：吹き出し画像に変更 ▼▼ --}}
                     <img src="{{ asset('images/icon_comment.png') }}" class="icon-img comment-icon" alt="コメント">
                     <span class="icon-count">{{ $commentCount }}</span>
                 </div>
@@ -55,7 +45,6 @@
             @guest
                 <a href="javascript:void(0);" class="btn-purchase" onclick="alert('ログインが必要です')">購入手続きへ</a>
             @endguest
-
             <h3 class="detail-section-title">商品説明</h3>
             <div class="detail-description-text">
                 {!! nl2br(e($item->description)) !!}
@@ -119,7 +108,6 @@
                     @endguest
                 </form>
             </div>
-
         </div>
     </div>
 </div>
@@ -127,10 +115,10 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const likeBtn = document.querySelector('.like-btn');
-        const likeIcon = document.querySelector('.heart-icon'); // imgタグを取得
+        const likeIcon = document.querySelector('.heart-icon');
         const likeCount = document.querySelector('#like-count');
 
-        // ▼▼ JSでの画像切り替え用パス（Bladeのassetヘルパーで展開しておく） ▼▼
+        //JSでの画像切り替え用パス
         const iconActive = "{{ asset('images/icon_like_active.png') }}";
         const iconDefault = "{{ asset('images/icon_like.png') }}";
 
@@ -158,11 +146,11 @@
                 })
                 .then(data => {
                     if (data.status === 'success') {
-                        // ▼▼ 画像の src を書き換える処理に変更！ ▼▼
+                        //画像の src を書き換える処理に変更
                         if (data.like_status === 'added') {
-                            likeIcon.src = iconActive; // 赤ハートにする
+                            likeIcon.src = iconActive;
                         } else {
-                            likeIcon.src = iconDefault; // グレーに戻す
+                            likeIcon.src = iconDefault;
                         }
                         likeCount.textContent = data.count;
                     }

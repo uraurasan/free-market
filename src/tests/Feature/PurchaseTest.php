@@ -16,9 +16,7 @@ class PurchaseTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * ID 10: 商品購入画面表示 (正常系)
-     */
+    //ID 10: 商品購入画面表示
     public function test_purchase_page_can_be_rendered()
     {
         // 1. 出品者と購入者を用意
@@ -44,9 +42,7 @@ class PurchaseTest extends TestCase
         $response->assertSee('テスト商品');
     }
 
-    /**
-     * ID 10: 自分の商品は購入できない (異常系)
-     */
+    //ID 10: 自分の商品は購入できない
     public function test_seller_cannot_purchase_own_item()
     {
         $seller = User::factory()->create();
@@ -66,14 +62,12 @@ class PurchaseTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * ID 10: 売り切れの商品は購入できない (異常系)
-     */
+    //ID 10: 売り切れの商品は購入できない (異常系)
     public function test_cannot_purchase_sold_out_item()
     {
         $seller = User::factory()->create();
         $buyer = User::factory()->create();
-        
+
         $item = Item::create([
             'user_id' => $seller->id,
             'name' => '売り切れ商品',
@@ -89,11 +83,7 @@ class PurchaseTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * ID 11: 決済処理 (Checkout)
-     * Stripeへのリダイレクトを確認したいが、外部APIはモック(模倣)する必要がある
-     * ここでは「セッションへの保存」と「リダイレクト」だけ簡易チェックする
-     */
+    //ID 11: 決済処理 (Checkout)
     public function test_checkout_redirects_to_stripe()
     {
         // StripeのAPIキー設定がないとエラーになる場合があるため、テスト用のダミーをセット
@@ -128,15 +118,12 @@ class PurchaseTest extends TestCase
 
         // セッションにデータが保存されたか
         $response->assertSessionHas('purchase_data');
-        
+
         // StripeのURLへリダイレクトされたか (モックで指定したURL)
         $response->assertRedirect('https://checkout.stripe.com/test');
     }
 
-    /**
-     * ID 11: 決済成功後の処理 (Success)
-     * DB更新処理をテスト
-     */
+    //ID 11: 決済成功後の処理 (Success)
     public function test_purchase_success_updates_database()
     {
         $seller = User::factory()->create();
@@ -160,7 +147,7 @@ class PurchaseTest extends TestCase
             'address' => '大阪府テスト市',
             'building_name' => 'マンション',
         ];
-        
+
         // セッションをセットして success ルートへアクセス
         $response = $this->actingAs($buyer)
             ->withSession(['purchase_data' => $purchaseData])

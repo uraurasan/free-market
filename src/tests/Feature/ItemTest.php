@@ -13,11 +13,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemTest extends TestCase
 {
-    use RefreshDatabase; // 毎回DBリセット
+    use RefreshDatabase;
 
-    /**
-     * 出品画面が正しく開けるか
-     */
+    //出品画面が正しく開けるか
     public function test_sell_screen_can_be_rendered()
     {
         // 1. ユーザーとカテゴリーを用意
@@ -33,17 +31,15 @@ class ItemTest extends TestCase
         $response->assertSee('ファッション');
     }
 
-    /**
-     * バリデーションテスト（必須項目が空の場合）
-     */
+    //バリデーションテスト（必須項目が空の場合）
     public function test_sell_validation_error_if_fields_are_missing()
     {
         $user = User::factory()->create();
 
-        // 空っぽのデータを送信
+        // 空のデータを送信
         $response = $this->actingAs($user)->post('/sell', []);
 
-        // エラーが出るはず（ExhibitionRequestで設定したメッセージ）
+        // エラー
         $response->assertSessionHasErrors([
             'name' => '商品名を入力してください',
             'description' => '商品説明を入力してください',
@@ -54,9 +50,7 @@ class ItemTest extends TestCase
         ]);
     }
 
-    /**
-     * バリデーションテスト（価格が数値じゃない、カテゴリが選ばれてないなど）
-     */
+    //バリデーションテスト（価格が数値じゃない、カテゴリが選ばれてないなど）
     public function test_sell_validation_error_invalid_data()
     {
         $user = User::factory()->create();
@@ -72,19 +66,16 @@ class ItemTest extends TestCase
         ]);
     }
 
-    /**
-     * ID 15: 出品商品情報登録（正常系）
-     * 商品出品画面にて必要な情報が保存できること
-     */
+    //ID 15: 出品商品情報登録
     public function test_item_can_be_stored_successfully()
     {
         // 1. 準備
-        Storage::fake('public'); // 仮想のストレージを用意（重要！）
+        Storage::fake('public'); // 仮想のストレージを用意
         $user = User::factory()->create();
         $category1 = Category::create(['name' => 'ファッション']);
         $category2 = Category::create(['name' => 'メンズ']); // 複数選択テスト用
 
-        // 偽の画像ファイルを作成
+        // 画像ファイルを作成
         $file = UploadedFile::fake()->image('test_product.jpg');
 
         // 2. 実行（送信するデータ）
@@ -92,7 +83,7 @@ class ItemTest extends TestCase
             'name' => 'テスト商品',
             'description' => 'これはテストです。',
             'price' => 1000,
-            'category_id' => null, // 古いフォーム値（念のため）
+            'category_id' => null,
             'categories' => [$category1->id, $category2->id], // 複数選択
             'condition' => 1, // 良好
             'image' => $file,
@@ -116,23 +107,21 @@ class ItemTest extends TestCase
         $this->assertTrue($item->categories->contains($category2->id));
 
         // 画像が保存されたか？（item_imagesディレクトリの中にハッシュ名で保存される）
-        // パスは $item->image_path に入ってるはず
+        // パスは $item->image_path に入る
         Storage::disk('public')->assertExists($item->image_path);
 
         // マイページへリダイレクトされたか？
         $response->assertRedirect(route('mypage'));
     }
 
-    /**
-     * ID 6: 商品検索機能
-     * 「商品名」で部分一致検索ができること
-     */
+
+    //ID 6: 商品検索機能
     public function test_search_items_by_keyword()
     {
         $owner = User::factory()->create();
 
         // データを手動で準備
-        // 検索に引っかかるやつ
+        // 検索に引っかかるもの
         Item::create([
             'user_id' => $owner->id,
             'name' => '素晴らしい時計',
@@ -140,11 +129,11 @@ class ItemTest extends TestCase
             'description' => '説明文',
             'item_condition' => 1,
             'sales_status' => 1,
-            'image_path' => 'test_image_1.jpg', // ▼▼ 追加！
-            'brand_name' => 'テストブランド',    // ▼▼ 念のため追加！
+            'image_path' => 'test_image_1.jpg',
+            'brand_name' => 'テストブランド',
         ]);
 
-        // 引っかからないやつ
+        // 引っかからないもの
         Item::create([
             'user_id' => $owner->id,
             'name' => '普通のバッグ',
@@ -152,11 +141,11 @@ class ItemTest extends TestCase
             'description' => '説明文',
             'item_condition' => 1,
             'sales_status' => 1,
-            'image_path' => 'test_image_2.jpg', // ▼▼ 追加！
-            'brand_name' => 'テストブランド',    // ▼▼ 念のため追加！
+            'image_path' => 'test_image_2.jpg',
+            'brand_name' => 'テストブランド',
         ]);
 
-        // 「時計」で検索！
+        // 「時計」で検索
         $response = $this->get('/?keyword=時計');
 
         // 検証
@@ -165,9 +154,7 @@ class ItemTest extends TestCase
         $response->assertDontSee('普通のバッグ');
     }
 
-    /**
-     * ID 6 (応用): 検索状態がマイリストでも保持されている
-     */
+    //ID 6 (応用): 検索状態がマイリストでも保持されている
     public function test_search_keyword_is_retained_in_mylist_tab()
     {
         $user = User::factory()->create();
@@ -184,8 +171,7 @@ class ItemTest extends TestCase
             'image_path' => 'test_image_3.jpg',
             'brand_name' => 'ロレックス',
         ]);
-        
-        // ▼▼ 修正：favorites テーブルにデータを登録！ ▼▼
+        //favorites テーブルにデータを登録
         \Illuminate\Support\Facades\DB::table('favorites')->insert([
             'user_id' => $user->id,
             'item_id' => $item->id,

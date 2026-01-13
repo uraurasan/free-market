@@ -13,12 +13,9 @@ use Illuminate\Support\Facades\Config;
 
 class AuthTest extends TestCase
 {
-    // SQLite :memory: を使うから、毎回DBをリセットするこれが必要！
     use RefreshDatabase;
 
-    /**
-     * ID 1: 会員登録機能のテスト
-     */
+    //ID 1: 会員登録機能のテスト
     public function test_register_validation_error_if_name_is_missing()
     {
         // 名前を空にして送信
@@ -94,7 +91,7 @@ class AuthTest extends TestCase
 
     public function test_register_success_and_redirects_to_verify_email()
     {
-        // メール通知をフェイク（実際には飛ばさない）
+        // メール通知
         Notification::fake();
 
         $response = $this->post('/register', [
@@ -117,9 +114,7 @@ class AuthTest extends TestCase
         Notification::assertSentTo($user, VerifyEmail::class);
     }
 
-    /**
-     * ID 2: ログイン機能のテスト
-     */
+    //ID 2: ログイン機能のテスト
     public function test_login_validation_error_if_email_is_missing()
     {
         $response = $this->post('/login', [
@@ -159,7 +154,7 @@ class AuthTest extends TestCase
             'password' => 'wrongpassword',
         ]);
 
-        // ここは lang/ja/auth.php の 'failed' が出るはず（句点あり）
+        //lang/ja/auth.php'failed'チェック
         $response->assertSessionHasErrors([
             'email' => 'ログイン情報が登録されていません。'
         ]);
@@ -178,13 +173,13 @@ class AuthTest extends TestCase
         ]);
 
         $this->assertAuthenticatedAs($user);
-        // 認証後はホームへ（メール未認証ならverifyへ行くけど、ここでは認証状態は問わない）
+        // 認証後はホームへ
         $response->assertStatus(302);
     }
 
-    /**
-     * ID 3: ログアウト機能
-     */
+
+    //ID 3: ログアウト機能
+
     public function test_logout_success()
     {
         $user = User::factory()->create();
@@ -196,9 +191,8 @@ class AuthTest extends TestCase
         $response->assertRedirect('/'); // トップへリダイレクト
     }
 
-    /**
-     * ID 16 (応用): メール認証の流れ
-     */
+
+    //ID 16 (応用): メール認証の流れ
     public function test_email_verification_process()
     {
         Notification::fake();
@@ -212,7 +206,7 @@ class AuthTest extends TestCase
         $response = $this->actingAs($user)->get('/mypage/profile');
         $response->assertRedirect('/email/verify');
 
-        // 3. 認証リンクの生成（本来はメールから取得するURL）
+        // 3. 認証リンクの生成
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
@@ -222,7 +216,7 @@ class AuthTest extends TestCase
         // 4. 認証リンクを踏む
         $response = $this->actingAs($user)->get($verificationUrl);
 
-        // 5. 認証完了してプロフィール設定へリダイレクト（しんちゃんが追加したVerifyEmailResponse）
+        // 5. 認証完了してプロフィール設定へリダイレクト
         $response->assertRedirect('/mypage/profile');
 
         // 6. DB上で認証済みになっているか確認

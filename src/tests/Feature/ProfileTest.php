@@ -15,15 +15,12 @@ class ProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * ID 13: ユーザー情報取得
-     */
+    //ID 13: ユーザー情報取得
     public function test_mypage_displays_user_info_and_items()
     {
-        // ▼▼ 修正：img_url -> profile_image に変更！ ▼▼
         $user = User::factory()->create([
             'name' => 'テストユーザー',
-            'profile_image' => 'profile.jpg', 
+            'profile_image' => 'profile.jpg',
         ]);
 
         // 1. 出品した商品を作る
@@ -50,10 +47,8 @@ class ProfileTest extends TestCase
             'image_path' => 'test2.jpg',
             'brand_name' => 'brand'
         ]);
-        
+
         // 購入履歴データ作成
-        // (favoritesではなくpurchasesテーブルに相当する処理が必要ならここに追加)
-        // ※Purchaseモデルを使って履歴を作る
         Purchase::create([
             'user_id' => $user->id,
             'item_id' => $boughtItem->id,
@@ -77,9 +72,7 @@ class ProfileTest extends TestCase
         $responseBuy->assertSee('自分が購入した商品');
     }
 
-    /**
-     * ID 14: ユーザー情報変更（初期値表示）
-     */
+    //ID 14: ユーザー情報変更
     public function test_profile_edit_screen_shows_initial_values()
     {
         $user = User::factory()->create([
@@ -96,9 +89,7 @@ class ProfileTest extends TestCase
         $response->assertSee('value="123-4567"', false);
     }
 
-    /**
-     * ID 14: ユーザー情報変更（更新処理）
-     */
+    //ID 14: ユーザー情報変更
     public function test_profile_can_be_updated()
     {
         Storage::fake('public');
@@ -106,13 +97,12 @@ class ProfileTest extends TestCase
 
         $file = UploadedFile::fake()->image('new_profile.jpg');
 
-        // ▼▼ 修正：img_url -> profile_image に変更！ ▼▼
         $response = $this->actingAs($user)->post('/mypage/profile', [
             'name' => '変更後ネーム',
             'post_code' => '999-9999',
             'address' => '変更後住所',
             'building_name' => '変更後ビル',
-            'profile_image' => $file, // フォームのname属性も profile_image のはず！
+            'profile_image' => $file,
         ]);
 
         // マイページへリダイレクト
@@ -124,8 +114,7 @@ class ProfileTest extends TestCase
             'name' => '変更後ネーム',
             'post_code' => '999-9999',
         ]);
-        
-        // ▼▼ 修正：DBのカラム名も profile_image に変更！ ▼▼
+
         $updatedUser = User::find($user->id);
         $this->assertNotNull($updatedUser->profile_image);
     }

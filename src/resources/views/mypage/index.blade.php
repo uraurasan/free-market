@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="mypage-container">
-    
     <div class="user-profile-section">
         <div class="user-avatar">
             @if(isset($user->profile_image) && $user->profile_image)
@@ -20,12 +19,12 @@
     </div>
 
     <div class="mypage-tabs">
-        <a href="{{ route('mypage', ['tab' => 'sell']) }}" 
-           class="tab-item {{ $tab === 'sell' ? 'active' : '' }}">
+        <a href="{{ route('mypage', ['tab' => 'sell']) }}"
+        class="tab-item {{ $tab === 'sell' ? 'active' : '' }}">
             出品した商品
         </a>
-        <a href="{{ route('mypage', ['tab' => 'buy']) }}" 
-           class="tab-item {{ $tab === 'buy' ? 'active' : '' }}">
+        <a href="{{ route('mypage', ['tab' => 'buy']) }}"
+        class="tab-item {{ $tab === 'buy' ? 'active' : '' }}">
             購入した商品
         </a>
     </div>
@@ -42,7 +41,7 @@
                             {{-- それ以外なら storage をつけて表示（出品データ） --}}
                             <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}">
                         @endif
-                        @if($item->sales_status === 2) 
+                        @if($item->sales_status === 2)
                             <span class="sold-label">Sold</span>
                         @endif
                     </div>
@@ -57,6 +56,5 @@
             {{ $tab === 'buy' ? '購入した商品はありません' : '出品した商品はありません' }}
         </p>
     @endif
-
 </div>
 @endsection
