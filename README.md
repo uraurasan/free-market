@@ -6,7 +6,7 @@
 ※ご自身の環境（ユーザーID）とDockerコンテナ内のユーザーID（PHPやMySQL）が異なることによる権限問題を回避するため、`docker-compose.yml`の設定を調整しています。
 お手数ですが、以下の手順でビルドをお願いいたします。
 
-念の為、下記方法での Docer ビルドをお願いいたします。
+念の為、下記方法での Docker ビルドをお願いいたします。
 
 1.`git clone git@github.com:uraurasan/free-market.git`
 
