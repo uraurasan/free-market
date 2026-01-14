@@ -66,11 +66,12 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         $this->app->instance(VerifyEmailResponse::class, new class implements VerifyEmailResponse {
-            public function toResponse($request)
-            {
-                return redirect()->intended('/mypage/profile');
-            }
-        });
+    public function toResponse($request)
+    {
+        // intended を外して、強制的に route('profile.edit') へ飛ばす！
+        return redirect()->route('profile.edit');
+    }
+});
 
         $this->app->bind(FortifyLoginRequest::class, LoginRequest::class);
 

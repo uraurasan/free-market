@@ -22,7 +22,9 @@
 
 2.`composer install`
 
-3.以下の内容を .env に追記・修正してください。
+3.`cp .env.example .env`
+
+4.以下の内容を .env に追記・修正してください。
 
 ```bash
 DB_CONNECTION=mysql
@@ -56,25 +58,25 @@ STRIPE_PUBLIC_KEY=pk_test_xxxxxxxxxxxxx
 STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxx
 ```
 
-4.アプリケーションキーの作成
+5.アプリケーションキーの作成
 
 ```bash
 php artisan key:generate
 ```
 
-5.シンボリックリンクの作成（画像表示用）
+6.シンボリックリンクの作成（画像表示用）
 
 ```bash
 php artisan storage:link
 ```
 
-6.マイグレーションの実行
+7.マイグレーションの実行
 
 ```bash
 php artisan migrate
 ```
 
-7.シーディングの実行（テストデータの投入）
+8.シーディングの実行（テストデータの投入）
 
 ```bash
 php artisan db:seed

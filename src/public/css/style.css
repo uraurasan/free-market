@@ -353,10 +353,13 @@ ul {
 }
 
 .price-input-field {
-    border: none;
-    outline: none;
+    border: none !important;
+    outline: none !important;
+    background: transparent;
     width: 100%;
     font-size: 16px;
+    padding: 0;
+    box-shadow: none !important;
 }
 
 .item-form .price-input-field:focus {
